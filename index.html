@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>  
+  <head>
+    <meta charset="ISO-8859-1" />
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="toDoListStyle.css" />
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/2x/list.png" />
+  </head>
+  <div class="wrapper">
+  <body>
+    <script defer src="./node_modules/socket.io/client-dist/socket.io.js"></script>
+    <script defer type="module" src="./js/toDoListController.js"></script>
+    <h3 class="header3 fixedContent">   
+      <img src="https://img.icons8.com/fluency/2x/list.png" alt="Logo" class="header__logo" />     
+      <span class="to-do-list-header"></span>
+    </h3>
+    <div class="action--bar">
+      <button class="add-new">        
+        <span class="add-new-span">Create Task</span>
+      </button>
+      <button class="show-archive">
+        <span class="show-archive-span">Archives</span>
+      </button>
+      <button class="show-to-do-list hidden">Active To-do List</button>
+    </div>  
+    <div class="scroll--table">
+    <table class="toDoTable">
+      <thead title="XXX"></thead>
+      <tr class="tblHeaderRow">
+        <th class="toDoTableHeader">
+          Sr.No.
+        </th>
+        <th class="toDoTableHeader hdr--task-description">
+          Task Description
+        </th>
+        <th class="toDoTableHeader hdr--start-date">
+          Start Date
+        </th>
+        <th class="toDoTableHeader hdr--end-date">
+          Expected End Date
+        </th>
+        <th class="toDoTableHeader hdr--status">
+          Status
+        </th>   
+        <th class="toDoTableHeader">          
+        </th>      
+        <th class="toDoTableHeader">          
+        </th> 
+        <th class="toDoTableHeader">          
+        </th> 
+      </tr>
+      <tr class="taskRow scroll--table">
+        <td class="taskID" style="display: none;">          
+        </td>
+        <td class="srNo">
+          1
+        </td>
+        <td id="taskDescCol">
+          <input id="taskDesc" class="taskDescription" placeholder="Task Description"/>
+        </td>
+        <td id="taskStrDateCol">
+          <input class="dateEntry taskStrDate"
+            type="date"            
+            required="required"
+          />
+        </td>
+        <td id="taskEndDateCol">
+          <input class="dateEntry taskEndDate"
+            type="date"            
+            required="required"            
+          />
+        </td>
+        <td class="taskStatusCol">
+          <select id="taskStatus" class="taskStat" name="statusList" style="color: darkmagenta" >
+            <option value="blank"></option>
+            <option value="started">Started</option>
+            <option value="notRq">Not required</option>
+            <option value="defr">Deferred</option>
+            <option value="inProgress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </td>
+        <!-- <td> -->
+          <!-- <button class="addButton" id="taskAddButton" title="Add New"><img class="actionImg" id="addTaskImg" src="addTask.png"></button> -->
+          <!-- <img class="actionImg addActionImg activeAdd" id="addTaskImg" src="./icons/addTask.png"> -->
+        <!-- </td> -->
+        <td>
+          <!-- <button class = "saveButton" id="taskSaveButton" title="Save"><img class="actionImg" id="saveTaskImg" src="saveTask.jpg"></button>           -->
+          <img class="actionImg saveActionImg" id="saveTaskImg" src="./icons/saveTask.jpg">
+        </td>
+        <td>
+          <!-- <button class = "editButton" id="taskEditButton" title="Edit"><img class="actionImg" id="editTaskImg" src="editTask.png"></button> -->
+          <img class="actionImg editActionImg" id="editTaskImg" src="./icons/editTask.png">
+        </td>
+        <td>
+          <!-- <button class = "deleteButton" id="taskDeleteButton" title="Delete"><img class="actionImg" id="deleteTaskImg" src="deleteTask.jpg"></button>           -->
+          <img class="actionImg deleteActionImg" id="deleteTaskImg" src="./icons/deleteTask.jpg">
+        </td>
+        <td>
+          <img class="actionImg archiveActionImg" id="archiveTaskImg" src="./icons/archiveTask.png">
+        </td>
+        <td style="opacity: 0" id="taskIndex">
+          0
+        </td>
+      </tr>
+    </table>
+    </div>
+    <div class="modal__new-task hidden">
+      <button class="btn--close-modal close-new-task-modal">&times;</button>
+      <h3 class="header3 modal__new-task-header">
+        <img src="https://img.icons8.com/fluency/2x/list.png" alt="Logo" class="header__logo" />
+        <span class="modal__new-task-title">Create New Task&nbsp;</span>
+      </h3>
+      <form class="modal__new-task-form">
+        <label>Task ID</label>
+        <label class="modal__new-task-id">A00001</label>
+        <label>Description</label>        
+        <textarea class="modal__new-task-desc" style="resize: none; height: 5rem; width: 20rem; padding-left: 5px;"></textarea>
+        <label>Start Date</label>
+        <input class="modal__new-task-start-date" type="date" />
+        <label>Expected End Date</label>
+        <input class="modal__new-task-end-date" type="date" />
+        <label>Status</label>
+        <select class="modal__new-task-status" name="statusList" style="color: darkmagenta" >
+          <option value="blank"></option>
+          <option value="started">Started</option>
+          <option value="notRq">Not required</option>
+          <option value="defr">Deferred</option>
+          <option value="inProgress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+        <button class="confirm-new-task">
+          <span>Confirm</span>
+        </button>
+      </form>
+    </div>
+    <div class="modal__delete-task hidden">
+      <button class="btn--close-delete-modal close-new-task-modal">&times;</button>
+      <h3 class="header3 modal__new-task-header">
+        <img src="https://img.icons8.com/fluency/2x/list.png" alt="Logo" class="header__logo" />
+        <span class="modal__new-task-title">Delete Task&nbsp;</span>
+      </h3>
+      <form class="modal__delete-task-form">
+        <label class="modal__delete-message"></label><br><br>        
+        <button class="confirm-delete-task">
+          <span>Confirm</span>
+        </button>
+      </form>
+    </div>
+    <div class="overlay hidden"></div>
+  </div>
+  </body>
+</html>
