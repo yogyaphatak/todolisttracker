@@ -63,15 +63,14 @@ class ToDoListView {
     addHandlerSortRows(handler) {
         this._toDoTableHeaderRow.addEventListener('click', function(evt) {
             evt.preventDefault();
-            if(evt.target.classList.contains('.hdr--task-description')) 
-                handler('description');
-            else if(evt.target.classList.contains('.hdr--start-date')) 
+            if(evt.target.classList.contains('hdr--task-description')) 
+                handler('taskDescription');
+            else if(evt.target.classList.contains('hdr--start-date')) 
                 handler('startDate');
-            else if(evt.target.classList.contains('.hdr--end-date')) 
+            else if(evt.target.classList.contains('hdr--end-date')) 
                 handler('endDate');
-            else if(evt.target.classList.contains('.hdr--status')) 
-                handler('status');
-            
+            else if(evt.target.classList.contains('hdr--status')) 
+                handler('status');            
         });
     }
 

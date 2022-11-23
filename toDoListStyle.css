@@ -35,6 +35,51 @@
     background-color: rgb(62, 133, 100);
 }
 
+.sort-tasks--bar {
+    height: 10rem;    
+    background-color: rgb(21, 52, 66);
+    color: rgb(74, 50, 182);
+    padding-left: 18px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: Arial;
+    margin-top: 10px; 
+}
+
+.sort-tasks--bar button {
+    background-color: rgb(128, 233, 184);
+    height: 1.5rem;
+    width: 7rem;
+    color: rgb(74, 50, 182);
+    font-size: 12px;
+    font-weight: bold;
+    font-family: Arial;
+    border-radius: 12px;
+    margin-top: 5px; 
+    margin-left: 0.2rem;
+    margin-right: 1rem;
+    border: none;
+}
+
+.sort-tasks--bar textarea {
+    color: darkmagenta;
+    font-size: 14px;    
+    font-family: Arial;
+    padding-left: 5px;
+    margin-top: 8px;
+    width: 25rem;
+    height: 3.5rem;
+    resize: none;
+    background-color: white;
+}
+
+.sort-tasks--bar select, input {
+    color: darkmagenta;
+    height: 1.50rem;
+    font-size:15px;
+    padding: 3px;
+}
+
 /* .add-new-span { */
     /* position: absolute; */
     /* transform: translateX(10px); */

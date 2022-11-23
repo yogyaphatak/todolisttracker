@@ -1,19 +1,25 @@
 'use strict'
 import { alphabets, numbers } from './config.js';
 import Task from './classTask.js';
-import {state, getNewTaskID, sendGetInitialDataRequest, updateAssignedTasks, updateArchivedTasks} from './toDoListModel.js'; 
+import {state, getNewTaskID, sendGetInitialDataRequest, updateAssignedTasks, updateArchivedTasks, sortAssignedTasks} from './toDoListModel.js'; 
 import toDoListView from './toDoListView.js';
 import createTaskView from './createTaskView.js';
 import archiveView from './archiveView.js';
 
 let currentIndex = 0;
 
-const loadInitialTaskData = function (isArchive = false) {
-  let _assignedTasks = state.assignedTasks;
-  state.srNo = 0;
-  if(isArchive) {
-    _assignedTasks = state.archivedTasks;
-  }
+const loadInitialTaskData = function (isArchive = false, sortedTasks = undefined) {
+  let _assignedTasks = [];
+
+  if(state.sortBy === '')
+    _assignedTasks = isArchive ? state.archivedTasks : state.assignedTasks;
+  else  
+    _assignedTasks = sortedTasks;
+
+  state.srNo = 0;  
+  // if(isArchive) {
+  //   _assignedTasks = state.archivedTasks;
+  // }
   
   if(_assignedTasks.length == 0) {    
     toDoListView.createTaskRow(state.srNo, undefined, true, getNewTaskID(), isArchive);
@@ -96,8 +102,20 @@ const controlShowActiveList = function() {
   loadInitialTaskData();
 }
 
-const controlSortRows = function() {
+const controlSortRows = function(sortBy) {
+  let sortedTasks = [];
+
+  toDoListView.removeTaskRows();
+  if(archiveView.isArchiveScreen()) {
+    state.displayArchive = true;
+    sortedTasks = sortAssignedTasks(sortBy, state.archivedTasks);    
+  }
+  else {
+    state.displayArchive = false;
+    sortedTasks = sortAssignedTasks(sortBy, state.assignedTasks);
+  }
   
+  loadInitialTaskData(state.displayArchive, sortedTasks);
 }
 
 const routeTaskAction = function(selectedId, action) {  
@@ -113,8 +131,7 @@ const routeTaskAction = function(selectedId, action) {
   if(action === 'edit')
     createTaskView.displayEditTaskWindow(selectedTask);
 
-  if(action === 'delete') {  
-    console.log('xdel.s.s');
+  if(action === 'delete') {    
     createTaskView.displayDeleteTaskWindow(selectedTask);
   }    
   
